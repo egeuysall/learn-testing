@@ -1,0 +1,10 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "internal/repository/queries"
+    schema: "internal/repository/migrations/001_create_users.sql"
+    gen:
+      go:
+        package: "supabase"
+        out: "internal/repository/generated"
+        sql_package: "pgx/v5"
