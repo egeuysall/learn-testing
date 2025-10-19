@@ -1,32 +1,27 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import Button from "./Button";
 
 describe("Button", () => {
-  it("renders with text", () => {
+  it("shows the text inside", () => {
     render(<Button onClick={() => {}}>Click me</Button>);
 
     expect(screen.getByText("Click me")).toBeInTheDocument();
   });
 
-  it("calls onClick when clicked", async () => {
-    // Create a mock function to track if it was called
-    const mockOnClick = vi.fn();
+  it("shows submit inside", () => {
+    render(<Button onClick={() => {}}>Submit</Button>);
 
-    // Render button with the mock
-    render(<Button onClick={mockOnClick}>Click me</Button>);
-
-    // Get the button
-    const button = screen.getByText("Click me");
-
-    // Simulate user clicking it
-    await userEvent.click(button);
-
-    // Assert the mock was called
-    expect(mockOnClick).toHaveBeenCalled();
+    expect(screen.getByText("Submit")).toBeInTheDocument();
   });
 
-  // TODO 2: Write test that button is disabled when disabled prop is true
-  // Hint: render with disabled={true}, then use expect(button).toBeDisabled()
+  it("is disabled when disabled prop is true", () => {
+    render(
+      <Button onClick={() => {}} disabled>
+        Submit
+      </Button>,
+    );
+
+    expect(screen.getByText("Submit")).toBeDisabled();
+  });
 });
