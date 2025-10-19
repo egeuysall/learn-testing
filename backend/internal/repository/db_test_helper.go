@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"os"
 	"testing"
 	"time"
 
@@ -67,14 +66,17 @@ func SetupTestDB(t *testing.T) *pgxpool.Pool {
 func runMigrations(t *testing.T, pool *pgxpool.Pool) {
 	ctx := context.Background()
 
-	// Read migration file
-	migration, err := os.ReadFile("./migrations/001_create_users.sql")
-	if err != nil {
-		t.Fatal(err)
-	}
+	// Actual SQL to create the table
+	migration := `
+	CREATE TABLE IF NOT EXISTS users (
+		id SERIAL PRIMARY KEY,
+		email VARCHAR(255) UNIQUE NOT NULL,
+		name VARCHAR(255) NOT NULL,
+		created_at TIMESTAMP DEFAULT NOW()
+	);
+	`
 
-	// Execute it
-	_, err = pool.Exec(ctx, string(migration))
+	_, err := pool.Exec(ctx, migration)
 	if err != nil {
 		t.Fatal(err)
 	}
